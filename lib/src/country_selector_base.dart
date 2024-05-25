@@ -75,19 +75,22 @@ abstract class CountrySelectorBase extends StatefulWidget {
         searchAutofocus = searchAutofocus ?? kIsWeb;
 }
 
-abstract class CountrySelectorBaseState<W extends CountrySelectorBase>
-    extends State<W> {
+abstract class CountrySelectorBaseState<W extends CountrySelectorBase> extends State<W> {
   late final CountrySelectorController controller;
   String searchText = '';
+  bool isControllerInit = false;
 
   @override
   didChangeDependencies() {
     super.didChangeDependencies();
-    controller = CountrySelectorController(
-      context,
-      widget.countries,
-      widget.favoriteCountries,
-    );
+    if (!isControllerInit) {
+      controller = CountrySelectorController(
+        context,
+        widget.countries,
+        widget.favoriteCountries,
+      );
+    }
+    isControllerInit = true;
     // language might have changed
     controller.search(searchText);
   }
